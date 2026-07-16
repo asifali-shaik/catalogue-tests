@@ -12,14 +12,12 @@ pipeline{
         stage('read package.json-version'){
             steps{
                 script{
-                    if (!fileExists('package.json')) {
-                    error "package.json not found in workspace: ${env.WORKSPACE}"
-                    }
-                    def packageJson = readJSON file: 'package.json'
+                    def jsonText = readFile file: 'package.json'
+                    def packageJson = readJSON text: jsonText   // 'text', not 'file' — bug doesn't apply here
                     appVersion = packageJson.version
                     echo "Building version: ${appVersion}"
                 }
-             }
+            }
         }
         stage('install dependencies'){
             steps{
@@ -80,4 +78,3 @@ pipeline{
         }
     }
 }
-
