@@ -1,4 +1,4 @@
-name: call out from another repo # name of the workflow 
+name: nodejs-feature-actions # name of the workflow 
 
 # This defines the event that triggers the workflow
 on: [push] # triggeres 
