@@ -31,7 +31,7 @@ jest.mock('mongodb', () => ({
 }));
 
 const request = require('supertest');
-const app = require('../server');
+const app = require('../../catalogue/server');
 
 beforeAll(async () => {
     // Allow the async mongoConnect() mock to resolve before tests run
@@ -108,7 +108,7 @@ describe('MongoDB disconnected', () => {
             ObjectId: jest.fn()
         }));
 
-        disconnectedApp = require('../server');
+        disconnectedApp = require('../../catalogue/server');
         await new Promise(resolve => setTimeout(resolve, 100));
     });
 
