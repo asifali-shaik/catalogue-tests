@@ -79,7 +79,7 @@ describe('Categories', () => {
         expect(res.status).toBe(200);
         expect(Array.isArray(res.body)).toBe(true);
     });
-});
+});       
 
 describe('Search', () => {
     test('GET /search/:text returns results array', async () => {
