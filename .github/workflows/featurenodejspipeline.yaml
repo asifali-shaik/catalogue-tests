@@ -5,7 +5,6 @@ on: [push] # triggeres
 
 jobs:
   feature-pipeline:
-    if: github.ref_name != 'main'
     uses: asifali-shaik/workflows/.github/workflows/nodejsfeaturepipeline.yaml@main
     with:
       project : 'git-hub'
