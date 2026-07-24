@@ -1,12 +1,30 @@
 name: nodejs-feature-actions # name of the workflow 
 
 # This defines the event that triggers the workflow
-on: [push] # triggeres 
+on: workflow_dispatch # triggeres 
 
 jobs:
-  feature-pipeline:
-    uses: asifali-shaik/workflows/.github/workflows/nodejsfeaturepipeline.yaml@main
-    with:
-      project : 'git-hub'
-      component: 'user'
-      envrionment: 'dev'
+  # Job name
+  catalogue-dev-pipeline:
+    runs-on: ubuntu-latest #  hosted runners
+    steps:
+      - name: check out code 
+        uses: actions/checkout@v6
+
+      - name: list the files
+        run: ls -la 
+
+      - name: Read version from package.json
+        id: package_version
+        run: |
+          VERSION=$(jq -r '.version' package.json)
+          echo "version=$VERSION" >> $GITHUB_ENV
+
+      - name: version of package.json
+        run : echo "$VERSION"
+
+      - name: install dependences
+        run: npm install 
+
+      - name: unit-tests
+        run: npm test
