@@ -38,7 +38,7 @@ jobs:
           SONAR_HOST_URL: ${{ vars.SONAR_URL }}
 
       - name: Check Dependabot Alerts
-        uses: Posture-Cybersecurity/dependabot-security-checker@v1.1.0
+        uses: Posture-Cybersecurity/dependabot-security-checker@v1.1.5
         with:
           github-token: ${{ secrets.DEPENDABOT_TOKEN }}
           severities: 'critical,high'  # Only check critical and high
