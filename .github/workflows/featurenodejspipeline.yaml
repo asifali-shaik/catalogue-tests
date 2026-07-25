@@ -2,6 +2,9 @@ name: nodejs-feature-actions
 
 on: workflow_dispatch
 
+permissions:
+  security-events: read
+
 jobs:
   catalogue-dev-pipeline:
     runs-on: ubuntu-latest
@@ -14,7 +17,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '20'
 
       - name: install dependencies
         run: npm install
