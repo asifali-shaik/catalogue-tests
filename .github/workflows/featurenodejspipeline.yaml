@@ -1,47 +1,32 @@
-name: nodejs-feature-actions # name of the workflow 
+name: nodejs-feature-actions
 
-# This defines the event that triggers the workflow
-on: workflow_dispatch # triggeres 
+on: workflow_dispatch
 
 jobs:
-  # Job name
   catalogue-dev-pipeline:
-    runs-on: self-hosted #  hosted runners
+    runs-on: ubuntu-latest
     steps:
-      - name: check out code 
+      - name: check out code
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0   # required for SonarQube to correctly assess new code / blame info
 
-      - name: list the files
-        run: ls -la 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
 
-      - name: Read version from package.json
-        id: package_version
-        run: |
-          VERSION=$(jq -r '.version' package.json)
-          echo "version=$VERSION" >> $GITHUB_ENV
-
-      - name: version of package.json
-        run : echo "$VERSION"
-
-      - name: install dependences
-        run: npm install 
+      - name: install dependencies
+        run: npm install
 
       - name: unit-tests
         run: npm test
 
-      - name: Ensure unzip is installed
-        run: sudo apt-get update && sudo apt-get install -y unzip
-
-      - name: sonar_scanner
-        id: sonar
-        uses: actions/checkout@v6
-        with:
-        # Disabling shallow clones is recommended for improving the relevancy of reporting
-         fetch-depth: 0
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v8.2.1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ vars.SONAR_URL }}
 
       - name: SonarQube Quality Gate check
         id: sonarqube-quality-gate-check
@@ -50,3 +35,4 @@ jobs:
           pollingTimeoutSec: 600
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ vars.SONAR_URL }}
