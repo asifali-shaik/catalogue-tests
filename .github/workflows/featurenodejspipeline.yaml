@@ -6,7 +6,7 @@ on: workflow_dispatch # triggeres
 jobs:
   # Job name
   catalogue-dev-pipeline:
-    runs-on: ubuntu-latest #  hosted runners
+    runs-on: self-hosted #  hosted runners
     steps:
       - name: check out code 
         uses: actions/checkout@v6
@@ -39,6 +39,7 @@ jobs:
         uses: SonarSource/sonarqube-scan-action@v8.2.1 # Ex: v4.1.0 or sha1, See the latest version at https://github.com/marketplace/actions/official-sonarqube-scan
         env:
          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+         SONAR_URL: ${{ vars.SONAR_URL }}
         
       - name: SonarQube Quality Gate check
         id: sonarqube-quality-gate-check
@@ -47,4 +48,4 @@ jobs:
           pollingTimeoutSec: 600
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: http://3.93.154.133:9000 #OPTIONAL
+          SONAR_HOST_URL: ${{ vars.SONAR_URL }} #OPTIONAL
